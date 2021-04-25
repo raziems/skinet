@@ -6,10 +6,38 @@ namespace Core.Specifications
 {
     public class ProductsWithTypesAndBrandsSpecification : BaseSpecification<Product>
     {
-        public ProductsWithTypesAndBrandsSpecification()
+        public ProductsWithTypesAndBrandsSpecification(ProductSpecParams productParams)
+        :base(x=>
+            (string.IsNullOrEmpty(productParams.Search) || x.Name.ToLower().Contains
+            (productParams.Search)) &&
+            (!productParams.BrandId.HasValue|| x.ProductBrandId==productParams.BrandId) && //the left condition is always false because we use !, so the right condition will execute
+            (!productParams.TypeId.HasValue || x.ProductTypeId==productParams.TypeId) //the left condition is always false because we use !, so the right condition will execute
+            )
         {
             AddInclude(x=> x.ProductType);
             AddInclude(x=> x.ProductBrand);
+            AddOrderBy(x => x.Name); //sort 
+            ApplyPaging(productParams.PageSize * (productParams.PageIndex-1),
+            productParams.PageSize);
+
+            if (!string.IsNullOrEmpty(productParams.Sort))
+            {
+                switch (productParams.Sort)
+                {
+                    case "priceAsc":
+                        AddOrderBy(p=> p.Price);
+                        break;
+                    case "priceDesc":
+                        AddOrderByDescending(p=> p.Price);
+                        break;
+                    default:
+                        AddOrderBy(n=> n.Name);
+                        break;
+
+                }
+            }
+
+
         }
 
         public ProductsWithTypesAndBrandsSpecification(int id) 
