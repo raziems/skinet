@@ -11,7 +11,7 @@ import { ShopService } from './shop.service';
   styleUrls: ['./shop.component.scss']
 })
 export class ShopComponent implements OnInit {
-  @ViewChild('search', {static:true}) searchTerm:ElementRef;//for angular 9, static default value set to false, for angular 8 and below, need to specify, true indicate the search element not relaying on any activity
+  @ViewChild('search', {static:false}) searchTerm:ElementRef;//for angular 9, static default value set to false, for angular 8 and below, need to specify, true indicate the search element not relaying on any activity
   products: IProduct[]; //from models
   brands:IBrand[];
   types : IType[];

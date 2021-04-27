@@ -9,6 +9,8 @@ import { CoreModule } from './core/core.module';
 import { ShopModule } from './shop/shop.module';
 import { HomeModule } from './home/home.module';
 import { ErrorInterceptor } from './core/interceptors/error.interceptor';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { LoadingInterceptor } from './core/interceptors/loading.interceptor';
 
 
 @NgModule({
@@ -23,11 +25,13 @@ import { ErrorInterceptor } from './core/interceptors/error.interceptor';
     HttpClientModule,
     CoreModule, //For NavigationBar
     //ShopModule, //Since we're using lazy loading, not requird to import
-    HomeModule
+    HomeModule,
+    NgxSpinnerModule
 
   ],
   providers: [
-    {provide: HTTP_INTERCEPTORS, useClass : ErrorInterceptor, multi:true} //API error handling
+    {provide: HTTP_INTERCEPTORS, useClass : ErrorInterceptor, multi:true}, //API error handling
+    {provide: HTTP_INTERCEPTORS, useClass : LoadingInterceptor, multi:true} //Load spinner
   ],
   bootstrap: [AppComponent]
 })
