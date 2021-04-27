@@ -1,5 +1,6 @@
 using API.Errors;
 using Infrastructure.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -15,11 +16,11 @@ namespace API.Controllers
         //Return error from API
 
         [HttpGet("testauth")]
-        //[Authorize]
+        [Authorize] 
         public ActionResult<string> GetSecretText()
         {
             return "secret stuff";
-        }
+        }        
 
         [HttpGet("notfound")]
         public ActionResult GetNotFoundRequest()
