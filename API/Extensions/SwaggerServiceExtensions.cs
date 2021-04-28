@@ -12,7 +12,7 @@ namespace API.Extensions
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title="SkiNet API", Version="v1"});
 
-                //To perform swagger token authentication validation
+                //To perform swagger token authentication validation for login
                 var securitySchema = new OpenApiSecurityScheme
                 {
                     Description = "JWT Auth Bearer Scheme",

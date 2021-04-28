@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AccountService } from './account/account.service';
 import { BasketService } from './basket/basket.service';
 
 @Component({
@@ -11,7 +12,7 @@ export class AppComponent implements OnInit {
   title = 'Skinet';
   
 
-  constructor(private basketService: BasketService) {
+  constructor(private basketService: BasketService, private accountService:AccountService) {
 
   }
 
@@ -24,8 +25,28 @@ export class AppComponent implements OnInit {
     //   console.log(error);
     // }); //get data from API
 
-    const baskerId=localStorage.getItem('basket_id');//get the basket_id from localstorage if available
     
+    this.loadBasket();
+    this.loadCurrentUser();
+
+  }
+
+  loadCurrentUser()
+  {
+    const token = localStorage.getItem('token');
+    
+    
+      this.accountService.loadCurrentUser(token).subscribe(()=>{
+        console.log('loaded user');        
+      }, error=>{
+        console.log(error)        
+      });
+    
+  }
+
+  loadBasket()
+  {
+    const baskerId=localStorage.getItem('basket_id');//get the basket_id from localstorage if available
     if (baskerId){
       this.basketService.getBasket(baskerId).subscribe(()=>{
         console.log('initialised basket');
@@ -33,7 +54,6 @@ export class AppComponent implements OnInit {
         console.log(error);
       })
     }
-
   }
 
 }
