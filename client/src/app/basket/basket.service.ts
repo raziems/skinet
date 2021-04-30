@@ -6,11 +6,11 @@ import { environment } from 'src/environments/environment';
 import { Basket, IBasket, IBasketItem, IBasketTotals } from '../shared/models/basket';
 import { IDeliveryMethod } from '../shared/models/deliveryMethod';
 import { IProduct } from '../shared/models/product';
-import { BasketRoutingModule } from './basket-routing.module';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class BasketService {
   baseUrl=environment.apiUrl;
   private basketSource = new BehaviorSubject<IBasket>(null);
@@ -22,9 +22,23 @@ export class BasketService {
 
   constructor(private http: HttpClient) { }
 
+  createPaymentIntent() {
+    return this.http.post(this.baseUrl + 'payments/' + this.getCurrentBasketValue().id, {})//because is post, need to put {} empty object this.getCurrentBasketValue().id, -->{})
+      .pipe(
+        map((basket: IBasket) => {
+          this.basketSource.next(basket);          
+          console.log(this.getCurrentBasketValue());
+        })
+      )
+  }
+
   setShippingPrice(deliveryMethod: IDeliveryMethod){
     this.shipping=deliveryMethod.price;
+    const basket=this.getCurrentBasketValue();
+    basket.deliveryMethodId=deliveryMethod.id;
+    basket.shippingPrice=deliveryMethod.price;
     this.calculateTotals();
+    this.setBasket(basket);
   }
 
   getBasket(id:string){
@@ -33,6 +47,7 @@ export class BasketService {
       map((basket: IBasket)=> {
         this.basketSource.next(basket);
         //console.log(this.getCurrentBasketValue());
+        this.shipping=basket.shippingPrice;//set shipping price before calculate the total. To solve the shipping price <blank> after refresh the page
         this.calculateTotals();
       })
     );

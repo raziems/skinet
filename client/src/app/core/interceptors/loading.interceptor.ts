@@ -15,10 +15,17 @@ export class LoadingInterceptor implements HttpInterceptor {
   constructor(private busyService: BusyService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    if(req.method==='POST' && req.url.includes('orders')){
+      return next.handle(req);
+    }
+    
     if(!req.url.includes('emailexists')) //to filter and don't display spinner while checking email address in register form
     {
-      this.busyService.busy();
+      //this.busyService.busy();
+      return next.handle(req);
     }
+
+    this.busyService.busy();
 
     
     return next.handle(req).pipe(

@@ -18,5 +18,10 @@ namespace Core.Entities
 
         public string Id { get; set; }      
         public List<BasketItem> Items{ get; set; } = new List<BasketItem>(); //create an empty list
+        public int? DeliveryMethodId { get; set; }
+        public string ClientSecret { get; set; }//for stripe to store information
+        public string PaymentIntentId { get; set; }
+        public decimal ShippingPrice { get; set; }
+
     }
 }
