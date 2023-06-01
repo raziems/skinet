@@ -8,10 +8,22 @@ jobs:
     - name: 🚚 Get latest code
       uses: actions/checkout@v3
     
+    - name: 🔨 Build Project
+      run: |
+        npm install
+        npm run build
+        
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:
         server: ftpupload.net
         username: epiz_34330652
         password: ${{ secrets.password }}
+        server-dir : /home/vol17_1/epizy.com/epiz_34330652/
+        exclude: |
+          **/.git*
+          **/.git*/**
+          **/node_modules/**
+          **/.vs*
+          **/.vscode*
 
