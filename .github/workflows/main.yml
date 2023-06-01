@@ -5,9 +5,7 @@ jobs:
     name: 🎉 Deploy
     runs-on: ubuntu-latest
     steps:
-    - name: Print a greeting
-      run:  echo “Hello readers”
-       
+          
     - name: 📂 Sync files
       uses: epiz_34330652
       with:
