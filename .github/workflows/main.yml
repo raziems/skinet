@@ -5,6 +5,8 @@ jobs:
     name: 🎉 Deploy
     runs-on: ubuntu-latest
     steps:
+    - name: 🚚 Get latest code
+      uses: actions/master
        
     - name: 📂 Sync files
       uses: epiz_34330652
